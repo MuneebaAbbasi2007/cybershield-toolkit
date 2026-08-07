@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2><i class="bi bi-bar-chart-fill text-info"></i> Security Assessment Dashboard</h2>
+
+{% if results %}
+<div class="row g-3 mt-2">
+    <div class="col-md-3">
+        <div class="card bg-info text-dark text-center">
+            <div class="card-body">
+                <i class="bi bi-shield-check fs-2"></i>
+                <h3>{{ summary.score }}%</h3>
+                <p class="mb-0">Overall Score</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-secondary text-light text-center">
+            <div class="card-body">
+                <i class="bi bi-clipboard-data fs-2"></i>
+                <h3>{{ summary.total }}</h3>
+                <p class="mb-0">Total Checks</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-danger text-light text-center">
+            <div class="card-body">
+                <i class="bi bi-exclamation-triangle fs-2"></i>
+                <h3>{{ summary.critical + summary.high }}</h3>
+                <p class="mb-0">Critical / High</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-light text-center">
+            <div class="card-body">
+                <i class="bi bi-check-circle fs-2"></i>
+                <h3>{{ summary.safe }}</h3>
+                <p class="mb-0">Safe Checks</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="/download-combined-report" class="btn btn-warning"><i class="bi bi-file-earmark-pdf"></i> Download Full Combined Report</a>
+</div>
+
+<hr class="border-secondary">
+
+<div class="accordion" id="resultsAccordion">
+{% for entry in results %}
+<div class="accordion-item bg-secondary text-light">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#item{{ loop.index }}">
+            {{ entry.tool }}
+        </button>
+    </h2>
+    <div id="item{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#resultsAccordion">
+        <div class="accordion-body" style="white-space:pre-line;">{{ entry.ai }}</div>
+    </div>
+</div>
+{% endfor %}
+</div>
+
+{% else %}
+<div class="alert alert-secondary mt-4">No results yet. Run a tool first (Password, WHOIS, DNS, or Scan), then come back here.</div>
+{% endif %}
+{% endblock %}

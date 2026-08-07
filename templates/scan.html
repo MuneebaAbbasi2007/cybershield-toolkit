@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Network Scanner{% endblock %}
+{% block content %}
+<h2><i class="bi bi-hdd-network text-info"></i> Network Scanner</h2>
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i> Only scan targets you own or have permission to test (e.g. scanme.nmap.org or 127.0.0.1)
+</div>
+
+<form method="POST" class="mt-3" onsubmit="showLoading()">
+    <div class="mb-3">
+        <label class="form-label">Enter target:</label>
+        <input type="text" name="target" class="form-control" placeholder="e.g. scanme.nmap.org" required>
+    </div>
+    <button type="submit" class="btn btn-info" id="scanBtn">Scan Network</button>
+</form>
+
+<div id="loadingBox" class="mt-3" style="display:none;">
+    <div class="spinner-border text-info" role="status"></div>
+    <span class="ms-2">Scanning target, please wait...</span>
+</div>
+
+{% if result and result.error %}
+<div class="alert alert-danger mt-4">
+    <i class="bi bi-exclamation-triangle"></i> {{ result.error }}
+</div>
+{% elif result %}
+<div class="card bg-secondary text-light mt-4">
+    <div class="card-body">
+        <div class="d-flex gap-4 mb-3">
+            <div><i class="bi bi-hdd-network"></i> <strong>Open Ports:</strong> {{ result.port_count }}</div>
+            <div><i class="bi bi-clock"></i> <strong>Scan Time:</strong> {{ result.scan_time }} sec</div>
+        </div>
+        {% for host, data in result.hosts.items() %}
+            <h5>Host: {{ host }} <span class="badge bg-info">{{ data.state }}</span></h5>
+            <table class="table table-dark table-striped">
+                <thead><tr><th>Port</th><th>State</th><th>Service</th></tr></thead>
+                <tbody>
+                {% for p in data.ports %}
+                    <tr><td>{{ p.port }}</td><td>{{ p.state }}</td><td>{{ p.service }}</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if ai_analysis %}
+<div class="card bg-dark border-info text-light mt-3">
+    <div class="card-body">
+        <h6><i class="bi bi-robot text-info"></i> AI Risk Analysis</h6>
+        {% if "Critical" in ai_analysis %}
+            <span class="badge bg-danger mb-2">🔴 CRITICAL</span>
+        {% elif "High" in ai_analysis %}
+            <span class="badge bg-danger mb-2">🔴 HIGH</span>
+        {% elif "Medium" in ai_analysis %}
+            <span class="badge bg-warning text-dark mb-2">🟡 MEDIUM</span>
+        {% elif "Low" in ai_analysis %}
+            <span class="badge bg-success mb-2">🟢 LOW</span>
+        {% endif %}
+        <div style="white-space:pre-line;">{{ ai_analysis }}</div>
+        <a href="/download-report" class="btn btn-sm btn-outline-warning mt-2"><i class="bi bi-file-earmark-pdf"></i> Download PDF</a>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function showLoading() {
+    document.getElementById('loadingBox').style.display = 'block';
+    document.getElementById('scanBtn').disabled = true;
+}
+</script>
+{% endblock %}

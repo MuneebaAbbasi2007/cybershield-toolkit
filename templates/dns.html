@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}DNS Lookup{% endblock %}
+{% block content %}
+<h2><i class="bi bi-search text-info"></i> DNS Lookup</h2>
+<form method="POST" class="mt-3" onsubmit="showLoading()">
+    <div class="mb-3">
+        <label class="form-label">Enter domain:</label>
+        <input type="text" name="domain" class="form-control" placeholder="e.g. google.com" required>
+    </div>
+    <button type="submit" class="btn btn-info" id="scanBtn">Check DNS</button>
+</form>
+<div id="loadingBox" class="mt-3" style="display:none;">
+    <div class="spinner-border text-info" role="status"></div>
+    <span class="ms-2">Checking DNS records, please wait...</span>
+</div>
+
+{% if result and result.error %}
+<div class="alert alert-danger mt-4">
+    <i class="bi bi-exclamation-triangle"></i> {{ result.error[0] }}
+</div>
+{% elif result %}
+<div class="card bg-secondary text-light mt-4">
+    <div class="card-body">
+        <table class="table table-dark table-striped mb-0">
+            <thead>
+                <tr><th>Record Type</th><th>Value</th></tr>
+            </thead>
+            <tbody>
+            {% for rtype, values in result.items() %}
+                <tr>
+                    <td><span class="badge bg-info">{{ rtype }}</span></td>
+                    <td>
+                        {% for v in values %}
+                            <div>{{ v }}</div>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endif %}
+
+{% if ai_analysis %}
+<div class="card bg-dark border-info text-light mt-3">
+    <div class="card-body">
+        <h6><i class="bi bi-robot text-info"></i> AI Risk Analysis</h6>
+        {% if "Critical" in ai_analysis %}
+            <span class="badge bg-danger mb-2">CRITICAL</span>
+        {% elif "High" in ai_analysis %}
+            <span class="badge bg-danger mb-2">HIGH</span>
+        {% elif "Medium" in ai_analysis %}
+            <span class="badge bg-warning text-dark mb-2">MEDIUM</span>
+        {% elif "Low" in ai_analysis %}
+            <span class="badge bg-success mb-2">LOW</span>
+        {% endif %}
+        <div style="white-space:pre-line;">{{ ai_analysis }}</div>
+        <a href="/download-report" class="btn btn-sm btn-outline-warning mt-2"><i class="bi bi-file-earmark-pdf"></i> Download PDF</a>
+    </div>
+</div>
+{% endif %}
+<script>
+function showLoading() {
+    document.getElementById('loadingBox').style.display = 'block';
+    document.getElementById('scanBtn').disabled = true;
+}
+</script>
+{% endblock %}

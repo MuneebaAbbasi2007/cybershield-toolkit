@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Home - CyberShield Toolkit{% endblock %}
+
+{% block content %}
+<style>
+.hover-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.hover-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 200, 255, 0.3);
+}
+</style>
+
+<div class="text-center mb-5">
+    <h1><i class="bi bi-shield-lock-fill text-info"></i> CyberShield Toolkit</h1>
+    <p class="text-secondary">Network Security • OSINT • DNS • Password Analysis • Reporting</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card bg-secondary text-light h-100 hover-card">
+            <div class="card-body text-center">
+                <i class="bi bi-hdd-network fs-1 text-info"></i>
+                <h5 class="card-title mt-2">Network Scanner</h5>
+                <a href="/scan" class="btn btn-info mt-2">Scan Network</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-secondary text-light h-100 hover-card">
+            <div class="card-body text-center">
+                <i class="bi bi-globe fs-1 text-info"></i>
+                <h5 class="card-title mt-2">WHOIS Lookup</h5>
+                <a href="/whois" class="btn btn-info mt-2">Lookup Domain</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-secondary text-light h-100 hover-card">
+            <div class="card-body text-center">
+                <i class="bi bi-search fs-1 text-info"></i>
+                <h5 class="card-title mt-2">DNS Lookup</h5>
+                <a href="/dns" class="btn btn-info mt-2">Check DNS</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-secondary text-light h-100 hover-card">
+            <div class="card-body text-center">
+                <i class="bi bi-key fs-1 text-info"></i>
+                <h5 class="card-title mt-2">Password Strength</h5>
+                <a href="/password" class="btn btn-info mt-2">Check Password</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-secondary text-light h-100 hover-card">
+            <div class="card-body text-center">
+                <i class="bi bi-hash fs-1 text-info"></i>
+                <h5 class="card-title mt-2">Hash Generator</h5>
+                <a href="/hash" class="btn btn-info mt-2">Generate Hash</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-dark text-light h-100 hover-card" style="border: 2px solid #0dcaf0;">
+            <div class="card-body text-center">
+                <i class="bi bi-bar-chart-fill fs-1 text-info"></i>
+                <h5 class="card-title mt-2">Security Dashboard</h5>
+                <p class="text-secondary small mb-1">Overall Status</p>
+                <a href="/dashboard" class="btn btn-outline-info mt-2">Open</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="text-center text-secondary mt-5 py-3 border-top border-secondary">
+    <p class="mb-0">CyberShield Toolkit — Version 1.0</p>
+    <p class="mb-0">Developed by Muneeba • 2026</p>
+</footer>
+{% endblock %}

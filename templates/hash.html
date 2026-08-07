@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Hash Generator{% endblock %}
+{% block content %}
+<h2><i class="bi bi-shield-lock text-info"></i> Hash Generator</h2>
+
+<form method="POST" class="mt-3">
+    <div class="mb-3">
+        <label class="form-label">Enter text:</label>
+        <input type="text" name="text" class="form-control" placeholder="Enter text to generate secure hashes..." required>
+    </div>
+    <button type="submit" class="btn btn-info">Generate Secure Hashes</button>
+</form>
+
+{% if result %}
+<div class="mt-4">
+    <div class="card bg-secondary text-light mb-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="mb-1">MD5</h6>
+                <code class="text-warning" id="md5val">{{ result.md5 }}</code>
+                <br><small class="text-white-50">{{ result.md5_note }}</small>
+            </div>
+            <button class="btn btn-sm btn-outline-light" onclick="copyText('md5val')"><i class="bi bi-clipboard"></i> Copy</button>
+        </div>
+    </div>
+
+    <div class="card bg-secondary text-light mb-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="mb-1">SHA-1</h6>
+                <code class="text-warning" id="sha1val">{{ result.sha1 }}</code>
+                <br><small class="text-white-50">{{ result.sha1_note }}</small>
+            </div>
+            <button class="btn btn-sm btn-outline-light" onclick="copyText('sha1val')"><i class="bi bi-clipboard"></i> Copy</button>
+        </div>
+    </div>
+
+    <div class="card bg-secondary text-light mb-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="mb-1">SHA-256</h6>
+                <code class="text-warning" id="sha256val">{{ result.sha256 }}</code>
+                <br><small class="text-white-50">{{ result.sha256_note }}</small>
+            </div>
+            <button class="btn btn-sm btn-outline-light" onclick="copyText('sha256val')"><i class="bi bi-clipboard"></i> Copy</button>
+        </div>
+    </div>
+
+    <div class="card bg-dark text-light border-info">
+        <div class="card-body">
+            <i class="bi bi-lightbulb text-warning"></i> <strong>Tip:</strong> Use SHA-256 for file integrity. Avoid MD5 for passwords.
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function copyText(id) {
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text);
+    alert("Copied!");
+}
+</script>
+{% endblock %}
