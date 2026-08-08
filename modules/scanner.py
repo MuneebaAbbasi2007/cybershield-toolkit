@@ -8,7 +8,7 @@ def scan_target(target):
     try:
         start = time.time()
         nm = nmap.PortScanner()
-        nm.scan(target, arguments='-F')
+        nm.scan(target, arguments='-p 21,22,23,25,53,80,110,443,3306,8080 --max-retries 1 --host-timeout 15s')
         duration = round(time.time() - start, 2)
 
         if not nm.all_hosts():
